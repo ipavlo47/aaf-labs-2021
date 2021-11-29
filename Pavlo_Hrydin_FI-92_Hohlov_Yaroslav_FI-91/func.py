@@ -1,51 +1,69 @@
-#штука для красивого вівода дерева
-import pprint
-pp = pprint.PrettyPrinter(indent = 15)
+import numpy as np
 
-#создания списка деревьев
-tree_list = {}
+class Node:
 
-#создание дерева с пустым значением для самого дерева, которое будет каждый раз обновляться, при добавление новых значений
-def create_tree(tree_list, name):
-    tree_list[name] = [[]]
-    return 0
+    mass = []
+    def __init__(self, data):
 
-#список всех точек обновляется, в 0 место вставляется дерево с описанием, кто чей листочек
-def insert_data_to_tree(tree_list,  name, x, y):
-    dots_list = tree_list.get(name)
-    dots_list.append([x,y])
-    dots_list[0] = print_tree(dots_list[1:])
-    # print(dots_list)
-    tree_list.update({name:dots_list})
-    return 0
+        self.left = None
+        self.right = None
+        self.mass.append(data)
+        self.data = data
 
-#как выглядет само дерево со списка деревьев
-def contains_tree(tree_list, name):
-    print(tree_list.get(name))
-    return 0
 
-#создание дерева со списка точек
-def print_tree(mas, depth = 0):
-    length = len(mas)
-    if length <= 0:
-        return None
-    axis = depth % 2
-    sorted_dots_list = sorted(mas, key = lambda point: point[axis])
-    return {
-        "point" : sorted_dots_list[int(length/2)],
-        "left" : print_tree(sorted_dots_list[:int(length/2)], depth + 1),
-        "right" : print_tree(sorted_dots_list[int(length/2 + 1):], depth + 1)
+    def insert(self, data, deepening = 0):
+        if self.data:
+            if data[deepening % 2] <= self.data[deepening % 2]:
+                if self.left is None:
+                    data+=[deepening + 1]
+                    self.left = Node(data)
+                else:
+                    deepening += 1
+                    self.left.insert(data, deepening)
+            elif data[deepening % 2] > self.data[deepening % 2]:
+                if self.right is None:
+                    data+=[deepening + 1]
+                    self.right = Node(data)
+                else:
+                    deepening += 1
+                    self.right.insert(data, deepening)
+        else:
+            self.data = data
 
-    }
 
-# create_tree(tree_list, "ipt")
-# insert_data_to_tree(tree_list, "ipt", 3, 7)
-# insert_data_to_tree(tree_list, "ipt", 8, 6)
-# insert_data_to_tree(tree_list, "ipt", 5, 4)
-# insert_data_to_tree(tree_list, "ipt", 3, 6)
-# insert_data_to_tree(tree_list, "ipt", 5, 8)
-# insert_data_to_tree(tree_list, "ipt", 3, 8)
-# insert_data_to_tree(tree_list, "ipt", 5, 7)
-# contains_tree(tree_list, "ipt")
-# pp.pprint(tree_list.get("ipt")[0])
-# print(print_tree(tree_list.get("ipt")[1:]))
+    def PrintTree(self):
+        if self.right:
+            self.right.PrintTree()
+        if (int(self.data[2]) != 0):
+            print("     " + "              " * (int(self.data[2])-1) + "|—————— ", self.data[:2], "..."*40)
+        else:
+            print(self.data[:2], "..."*40)
+        if self.left:
+            self.left.PrintTree()
+
+    def get_list(self):
+        return np.array(self.mass).T[:2].T.tolist()
+
+
+
+#
+# tree_list = {}
+# tree_list["ipt"] = []
+# print(tree_list["ipt"].get_list())
+#
+#
+# tree_list["ipt"] = Node([5, 4] + [0])
+# tree_list["ipt"].insert([3, 7])
+# tree_list["ipt"].insert([5, 1])
+# tree_list["ipt"].insert([6, 11])
+# tree_list["ipt"].insert([6, 4])
+# tree_list["ipt"].insert([1, 7])
+# tree_list["ipt"].insert([3, 5])
+# tree_list["ipt"].PrintTree()
+#
+#
+#
+# tree_list["ipt"].insert([18, 6])
+# tree_list["ipt"].PrintTree()
+#
+# print(tree_list["ipt"].get_list())

@@ -6,7 +6,7 @@ argument = {}
 def Create(words):
 	if not(words[1] in name_tree):
 		if(re.search(r'[a-zA-Z]',words[1])):
-			create_tree(argument, words[1])
+			argument[words[1]] = []
 			name_tree.append(words[1])
 			print("Set", words[1], "has been created")
 		else: print("Incorrect name")
@@ -14,25 +14,29 @@ def Create(words):
 
 def Insert(words):
 	if(words[1] in name_tree):
-		# argument.get(words[1]).append(str.split('[', 1)[1].split(']')[0].replace(',', ' ').split())
 		arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
-		insert_data_to_tree(argument, words[1], arg[0], arg[1])
-		print("Range [" + arg[0]+ ',', arg[1] + "] has been added to " + words[1] + '.' )
+		if (int(arg[0]) <= int(arg[1])):
+			if (argument[words[1]] == []):
+				argument[words[1]] = Node(arg + [0])
+			else:
+				argument[words[1]].insert(arg)
+			print("Range [" + arg[0]+ ',', arg[1] + "] has been added to " + words[1] + '.' )
+		else: print("segment entered incorrectly")
 	else: print("Incorrect name")
 
 def Contains(words):
 	if(words[1] in name_tree):
-		k = argument.get(words[1])[1:]
+		k = argument[words[1]].get_list()
 		arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
 		for i in k:
 			if((i[0] == arg[0]) and (i[1] == arg[1])):
 				print("True")
-			else: print("False")
+
 
 def Search(words):
 	answer = []
 	if(words[1] in name_tree):
-		arr = argument[words[1]][1:]
+		arr = argument[words[1]].get_list()
 		for i in range(len(arr)):
 			for j in range(2):
 				arr[i][j] = int(arr[i][j])
@@ -64,12 +68,10 @@ def Search(words):
 
 def Print(words):
 	if(words[1] in name_tree):
-		pp.pprint(argument[words[1]][0])
-		print(words[1])
-		# pp.pprint(tree_list.get(words[1])[0])
-		# print(print_tree(tree_list.get(words[1])[1:]))
-		# print(print_tree(tree_list.get(words[1])[1:]))
-		# contains_tree(argument, words[1])
+		if (argument[words[1]] != []):
+			argument[words[1]].PrintTree()
+		else:
+			print("<None inside>")
 	else: print("Haven't this tree")
 
 def filter(str):
