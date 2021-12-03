@@ -1,5 +1,6 @@
 from func import *
 import re
+import math
 name_tree = []
 argument = {}
 
@@ -17,54 +18,41 @@ def Insert(words):
 		arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
 		if (int(arg[0]) <= int(arg[1])):
 			if (argument[words[1]] == []):
-				argument[words[1]] = Node(arg + [0])
+				arg = [int(arg[0]), int(arg[1])]
+				argument[words[1]] = Node(arg)
 			else:
+				arg = [int(arg[0]), int(arg[1])]
 				argument[words[1]].insert(arg)
-			print("Range [" + arg[0]+ ',', arg[1] + "] has been added to " + words[1] + '.' )
+
 		else: print("segment entered incorrectly")
 	else: print("Incorrect name")
 
-def Contains(words):
+def Contains_tree(words):
 	if(words[1] in name_tree):
-		k = argument[words[1]].get_list()
 		arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
-		for i in k:
-			if((i[0] == arg[0]) and (i[1] == arg[1])):
-				print("True")
+		arg = [int(arg[0]), int(arg[1])]
+		argument[words[1]].Contains(arg)
 
 
-def Search(words):
-	answer = []
+def Search_tree(words):
+
 	if(words[1] in name_tree):
-		arr = argument[words[1]].get_list()
-		for i in range(len(arr)):
-			for j in range(2):
-				arr[i][j] = int(arr[i][j])
 		if(len(words) > 2):
 			if(re.search(r'(?i)where', words[2])):
 				if(re.search(r'(?i)contains_by',words[3])):
 					arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
-					for i in range(2):
-						arg[i] = int(arg[i])
-					for k in range(len(arr)):
-						if((arg[0] <= arr[k][0]) and (arr[k][1] <= arg[1])):
-							answer.append(arr[k])
+					arg = [int(arg[0]), int(arg[1])]
+					argument[words[1]].Search(arg)
 				elif(re.search(r'(?i)intersects', words[3])):
 					arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
-					for i in range(2):
-						arg[i] = int(arg[i])
-					for k in range(len(arr)):
-						if(((arg[0] <= arr[k][1]) and (arr[k][1] <= arg[1])) or ((arg[0] <= arr[k][0]) and(arr[k][0] <= arg[1]))):
-							answer.append(arr[k])
+					arg = [int(arg[0]), int(arg[1])]
+					argument[words[1]].Intersects(arg)
 				elif(re.search(r'(?i)right_of', words[3])):
 					if(re.search(r'[0-9]',words[4])):
-						a = int(words[4])
-						for k in range(len(arr)):
-							if((a <= arr[k][0]) and (a <= arr[k][1])):
-								answer.append(arr[k])
-				print(answer)
+						print(words[4])
+						argument[words[1]].Search([int(words[4]), 100000])
 			else: print("WHERE is error")
-		else: print(arr)
+		else: argument[words[1]].Search([-100000, 100000])
 
 def Print(words):
 	if(words[1] in name_tree):
@@ -82,9 +70,9 @@ def filter(str):
 	elif(re.search(r'(?i)insert',words[0])):
 		Insert(words)
 	elif(re.search(r'(?i)contains',words[0])):
-		Contains(words)
+		Contains_tree(words)
 	elif(re.search(r'(?i)search',words[0])):
-		Search(words)
+		Search_tree(words)
 	elif(re.search(r'(?i)print',words[0])):
 		Print(words)
 	else:
