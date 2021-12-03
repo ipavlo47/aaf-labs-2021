@@ -56,9 +56,9 @@ class Node:
     def Search(self, info_for_found, significative = 0):
         if significative == 0:
             if (self.data[significative] < info_for_found[significative]):
-                if self.left:
+                if self.right:
                     significative ^= 1
-                    self.left.Search(info_for_found, significative)
+                    self.right.Search(info_for_found, significative)
             else:
                 if (self.data[significative] >= info_for_found[significative]) and (self.data[significative ^ 1] <= info_for_found[significative ^ 1]):
                     print(self.data)
@@ -75,9 +75,9 @@ class Node:
                     self.left.Search(info_for_found, significative)
         else:
             if (self.data[significative] > info_for_found[significative]):
-                if self.right:
+                if self.left:
                     significative ^= 1
-                    self.right.Search(info_for_found, significative)
+                    self.left.Search(info_for_found, significative)
             else:
                 if (self.data[significative ^ 1] >= info_for_found[significative ^ 1]) and (self.data[significative] <= info_for_found[significative]):
                     print(self.data)
@@ -200,8 +200,8 @@ class Node:
 # tree_list["ipt"].Search([1, 10])
 # tree_list["ipt"].Contains([8, 16])
 # tree_list["ipt"].Intersects([1, 8])
-# #
-# #
+# # #
+# # #
 
 
 # tree_list["ipt"].insert([6, 18])

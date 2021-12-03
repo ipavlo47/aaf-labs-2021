@@ -39,7 +39,7 @@ def Search_tree(words):
 	if(words[1] in name_tree):
 		if(len(words) > 2):
 			if(re.search(r'(?i)where', words[2])):
-				if(re.search(r'(?i)contains_by',words[3])):
+				if(re.search(r'(?i)contained_by',words[3])):
 					arg = str.split('[', 1)[1].split(']')[0].replace(',', ' ').split()
 					arg = [int(arg[0]), int(arg[1])]
 					argument[words[1]].Search(arg)
@@ -49,8 +49,9 @@ def Search_tree(words):
 					argument[words[1]].Intersects(arg)
 				elif(re.search(r'(?i)right_of', words[3])):
 					if(re.search(r'[0-9]',words[4])):
-						print(words[4])
 						argument[words[1]].Search([int(words[4]), 100000])
+				else:
+					print("argument after WHERE is errored")
 			else: print("WHERE is error")
 		else: argument[words[1]].Search([-100000, 100000])
 
