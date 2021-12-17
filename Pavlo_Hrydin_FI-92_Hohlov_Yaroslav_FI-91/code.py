@@ -1,8 +1,5 @@
 from func import *
 import re
-import os
-import math
-import numpy as np
 name_tree = []
 argument = {}
 
@@ -51,10 +48,9 @@ def Search_tree(words):
 					argument[words[1]].Intersects(arg)
 				elif(re.search(r'(?i)right_of', words[3])):
 					if(re.search(r'[0-9]',words[4])):
-						print(words[4])
-						argument[words[1]].Search([int(words[4]), np.inf])
+						argument[words[1]].right_Search(int(words[4]))
 			else: print("WHERE is error")
-		else: argument[words[1]].Search([-np.inf, np.inf])
+		else: argument[words[1]].e_Search()
 
 def Print(words):
 	if(words[1] in name_tree):
