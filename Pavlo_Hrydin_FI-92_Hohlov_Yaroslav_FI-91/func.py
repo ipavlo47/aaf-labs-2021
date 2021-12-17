@@ -1,30 +1,30 @@
 class Node:
 
-    def __init__(self, data):
+    def __init__(self, data, name):
 
         self.left = None
         self.right = None
         self.data = data
-        print("Range " + str(data) + " has been added to set_name")
+        print("Range " + str(data) + " has been added to " + name)
 
 
-    def insert(self, data, significative = 0):
+    def insert(self, data, name, significative = 0):
         if self.data:
             if self.data == data:
                 print("this line consist in")
             else:
                 if data[significative] <= self.data[significative]:
                     if self.left is None:
-                        self.left = Node(data)
+                        self.left = Node(data, name)
                     else:
-                        self.left.insert(data, significative ^ 1)
+                        self.left.insert(data, name, significative ^ 1)
                 elif data[significative] > self.data[significative]:
                     if self.right is None:
-                        self.right = Node(data)
+                        self.right = Node(data, name)
                     else:
-                        self.right.insert(data, significative ^ 1)
+                        self.right.insert(data, name, significative ^ 1)
         else:
-            print("Range " + str(data) + " has been added to set_name")
+            print("Range " + str(data) + " has been added to " + name)
             self.data = data
 
     def PrintTree(self, significative = 0):
