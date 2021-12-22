@@ -58,29 +58,29 @@ class Node:
 
     def Search(self, info_for_found, significative = 0):
         if significative == 0:
-            if (self.data[significative] < info_for_found[significative]):
+            if (self.data[0] < info_for_found[0]):
                 if self.right:
-                    self.right.Search(info_for_found, significative ^ 1)
+                    self.right.Search(info_for_found, 1)
             else:
-                if (self.data[significative] >= info_for_found[significative]) and (self.data[significative ^ 1] <= info_for_found[significative ^ 1]):
+                if (self.data[0] >= info_for_found[0]) and (self.data[1] <= info_for_found[1]):
                     print(self.data)
-                if self.data[significative] != info_for_found[significative ^ 1]:
+                if self.data[0] <= info_for_found[1]:
                     if self.right:
-                        self.right.Search(info_for_found, significative ^ 1)
+                        self.right.Search(info_for_found, 1)
                 if self.left:
-                    self.left.Search(info_for_found, significative ^ 1)
+                    self.left.Search(info_for_found, 1)
         else:
-            if (self.data[significative] > info_for_found[significative]):
+            if (self.data[significative] > info_for_found[1]):
                 if self.left:
-                    self.left.Search(info_for_found, significative ^ 1)
+                    self.left.Search(info_for_found, 1)
             else:
-                if (self.data[significative ^ 1] >= info_for_found[significative ^ 1]) and (self.data[significative] <= info_for_found[significative]):
+                if (self.data[0] >= info_for_found[0]) and (self.data[1] <= info_for_found[1]):
                     print(self.data)
                 if self.right:
-                    self.right.Search(info_for_found, significative ^ 1)
-                if self.data[significative] != info_for_found[significative ^ 1]:
+                    self.right.Search(info_for_found, 0)
+                if self.data[1] >= info_for_found[0]:
                     if self.left:
-                        self.left.Search(info_for_found, significative ^ 1)
+                        self.left.Search(info_for_found, 0)
 
     def Intersects(self, info_for_found, significative = 0):
         if significative == 0:
@@ -113,34 +113,20 @@ class Node:
             print(False)
 
     def Contains_by(self, info_for_found, significative = 0):
-        if significative == 0:
-            if (self.data[significative] > info_for_found[significative]):
-                if self.left:
-                    if self.left.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
-            else:
-                if (self.data[significative] == info_for_found[significative]) and (self.data[significative ^ 1] == info_for_found[significative ^ 1]):
+        if (self.data[significative] == info_for_found[significative]) and (
+                self.data[significative ^ 1] == info_for_found[significative ^ 1]):
+            return 1
+        if (info_for_found[significative] <= self.data[significative]):
+            if self.left:
+                if self.left.Contains_by(info_for_found, significative ^ 1) == 1:
                     return 1
-                if self.right:
-                    if self.right.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
-                if self.left:
-                    if self.left.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
         else:
-            if (self.data[significative] < info_for_found[significative]):
-                if self.right:
-                    if self.right.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
-            else:
-                if (self.data[significative ^ 1] == info_for_found[significative ^ 1]) and (self.data[significative] == info_for_found[significative]):
+            if self.right:
+                if self.right.Contains_by(info_for_found, significative ^ 1) == 1:
                     return 1
-                if self.right:
-                    if self.right.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
-                if self.left:
-                    if self.left.Contains_by(info_for_found, significative ^ 1) == 1:
-                        return 1
+
+
+        return 0
 #
 # tree_list = {}
 # tree_list["ipt"] = []
